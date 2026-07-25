@@ -1,0 +1,6 @@
+@RadiationMonitor_HostAddress = http://localhost:5254
+
+GET {{RadiationMonitor_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
