@@ -17,6 +17,4 @@ Database
 ------------------------------------------------------------------------------------------------
 DOCUMENTATION
 ------------------------------------------------------------------------------------------------
---> RadiationMonitor --> docs
-domain-ADR.txt
-|domain-model.txt
+--> RadiationMonitor --> docs --> domain-ADR.txt|domain-model.txt
