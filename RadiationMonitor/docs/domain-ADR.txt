@@ -1,0 +1,30 @@
+﻿***** DOMAIN ADR *****
+Architecture Decision Record
+
+
+=============================================================== 
+                             ENTITIES 
+===============================================================
+
+------------------------------------------------------
+                     Measurement.cs
+------------------------------------------------------
+
+> Guid - Global Unique Identifier
+> DateTimeOffset - DateTimeOffset records the time of the measurement and the offset from UTC
+> double - double is more accurate than float, more suitable for physical measurements
+> private set - the class need to keep control on his own state
+> DetectorId - string and not a Guid, because this is a physical id of the detector, like a serial number on the physical detector. 
+> Id - create into the constructor, keep intern responsabilities
+> if - not if esle because they are independant of the others
+
+
+=============================================================== 
+                             ENUMS
+===============================================================
+
+------------------------------------------------------
+                     DetectorStatus.cs
+------------------------------------------------------
+
+DetectorStatus - enum and not a list because is only one status possible

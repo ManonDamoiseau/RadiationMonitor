@@ -1,0 +1,40 @@
+﻿***** DOMAIN MODEL *****
+
+
+API
+|
+Application
+|
+Domain
+|
+Infrastructure
+|
+Database
+
+
+=============================================================== 
+                             PURPOSE
+===============================================================
+
+Business concepts of the RadiationMonitor application, the application simulates radiation detectors used in medical environments.
+
+
+=============================================================== 
+                             ENTITIES 
+===============================================================
+
+> Measurement = one value acquired from a detector / business entity
+	>> unique identifier
+	>> detector identifier - invalid : null || ""
+	>> timestamp
+	>> doserate - valid : >= 0 / invalid : < 0 
+	>> detector status
+
+
+=============================================================== 
+                             TO DO 
+===============================================================
+
+> calibration information
+> alarm thresholds
+> measurement invalid/ rejected measurement

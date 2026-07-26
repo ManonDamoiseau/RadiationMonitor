@@ -4,5 +4,5 @@
   <Project Path="RadiationMonitor.Domain/RadiationMonitor.Domain.csproj" />
   <Project Path="RadiationMonitor.Infrastructure/RadiationMonitor.Infrastructure.csproj" />
   <Project Path="RadiationMonitor.Tests/RadiationMonitor.Tests.csproj" />
-  <Project Path="RadiationMonitor/RadiationMonitor.csproj" />
+  <Project Path="RadiationMonitor/RadiationMonitor.API.csproj" />
 </Solution>

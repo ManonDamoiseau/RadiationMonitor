@@ -4,8 +4,10 @@ using System.Text;
 
 namespace RadiationMonitor.Domain.Enums;
 
-
-public enum DetectorStatusEnum { //enum car un seul status possible à la fois
+/// <summary>
+/// Status : Online, Warning or Error
+/// </summary>
+public enum DetectorStatus { 
     Online, 
     Warning, 
     Error
