@@ -19,4 +19,4 @@ DOCUMENTATION
 ------------------------------------------------------------------------------------------------
 --> RadiationMonitor --> docs
 domain-ADR.txt
-domain-model.txt
+|domain-model.txt
