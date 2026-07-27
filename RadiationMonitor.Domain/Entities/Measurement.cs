@@ -21,11 +21,11 @@ namespace RadiationMonitor.Domain.Entities
         {
             if (string.IsNullOrWhiteSpace(detectorId))
             {
-                throw new ArgumentException(String.Format("Detector id is missing"));
+                throw new ArgumentException("Detector id is missing");
             }
             if (timestamp == default(DateTimeOffset))
             {
-                throw new ArgumentException(String.Format("Incorrect Timestamp"));
+                throw new ArgumentException("Incorrect Timestamp");
             }
  
             if (doseRate < 0)
