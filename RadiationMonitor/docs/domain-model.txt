@@ -23,12 +23,16 @@ Business concepts of the RadiationMonitor application, the application simulates
                              ENTITIES 
 ===============================================================
 
-> Measurement = one value acquired from a detector / business entity
+> Measurement = one validated and usable measurement from a detector
 	>> unique identifier
 	>> detector identifier - invalid : null || ""
 	>> timestamp
 	>> doserate - valid : >= 0 / invalid : < 0 
-	>> detector status
+	>> detector status 
+		>>> unknown : default, missing information - invalid
+		>>> online : work normally - valid
+		>>> warning : abnormal condition has been detected and requires monitoring - valid ==> To be confirmed
+		>>> error : breakdown, unable to operate - invalid
 
 
 =============================================================== 

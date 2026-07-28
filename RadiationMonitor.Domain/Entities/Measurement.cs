@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 
 namespace RadiationMonitor.Domain.Entities
@@ -19,18 +20,39 @@ namespace RadiationMonitor.Domain.Entities
 
         public Measurement(string detectorId, DateTimeOffset timestamp, double doseRate, DetectorStatus status)
         {
+            if (detectorId is null)
+            {
+                throw new ArgumentNullException(nameof(detectorId));
+            }
+
+            if (detectorId.Length == 0)
+            {
+                throw new ArgumentException ("Detector id cannot be empty.", nameof(detectorId));
+            }
+
             if (string.IsNullOrWhiteSpace(detectorId))
             {
-                throw new ArgumentException("Detector id is missing");
+                throw new ArgumentException("Detector id cannot contain only whitespace.", nameof(detectorId));
             }
+
             if (timestamp == default(DateTimeOffset))
             {
-                throw new ArgumentException("Incorrect Timestamp");
+                throw new ArgumentException("Incorrect Timestamp", nameof(timestamp));
             }
  
             if (doseRate < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(doseRate),"Dose rate is negative value");
+            }
+
+            if (status == DetectorStatus.Unknown)
+            {
+                throw new ArgumentException("Unknown status", nameof(status));
+            }
+
+            if (status == DetectorStatus.Error)
+            {
+                throw new ArgumentException("Error status", nameof(status));
             }
 
             this.Id = Guid.NewGuid();
