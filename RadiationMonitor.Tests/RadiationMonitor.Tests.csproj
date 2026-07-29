@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RadiationMonitor.Application\RadiationMonitor.Application.csproj" />
     <ProjectReference Include="..\RadiationMonitor.Domain\RadiationMonitor.Domain.csproj" />
   </ItemGroup>
 

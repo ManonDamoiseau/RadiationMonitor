@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RadiationMonitor.Domain\RadiationMonitor.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

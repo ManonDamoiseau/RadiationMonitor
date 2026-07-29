@@ -1,0 +1,3 @@
+﻿***** APPLICATION ADR *****
+Architecture Decision Record
+

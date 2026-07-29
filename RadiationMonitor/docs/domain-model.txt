@@ -5,24 +5,19 @@ API
 |
 Application
 |
-Domain
+Domain <<
 |
 Infrastructure
 |
 Database
 
-
-=============================================================== 
-                             PURPOSE
-===============================================================
-
-Business concepts of the RadiationMonitor application, the application simulates radiation detectors used in medical environments.
+---------------------------------------------------------------
+PURPOSE
+---------------------------------------------------------------
+= Business concepts of the RadiationMonitor application, the application simulates radiation detectors used in medical environments.
 
 
-=============================================================== 
-                             ENTITIES 
-===============================================================
-
+|Entities|
 > Measurement = one validated and usable measurement from a detector
 	>> unique identifier
 	>> detector identifier - invalid : null || ""
@@ -34,11 +29,5 @@ Business concepts of the RadiationMonitor application, the application simulates
 		>>> warning : abnormal condition has been detected and requires monitoring - valid ==> To be confirmed
 		>>> error : breakdown, unable to operate - invalid
 
-
-=============================================================== 
-                             TO DO 
-===============================================================
-
-> calibration information
-> alarm thresholds
-> measurement invalid/ rejected measurement
+|Enums|
+> DetectorStatus

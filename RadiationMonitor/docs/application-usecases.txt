@@ -1,0 +1,37 @@
+﻿***** USECASES APPLICATION *****
+
+
+API
+|
+Application <<
+|
+Domain 
+|
+Infrastructure
+|
+Database
+
+---------------------------------------------------------------
+PURPOSE
+---------------------------------------------------------------
+= Recording of a new reading from a sensor
+
+1. A measurement is received by the system
+2. The application receives the measurement data
+3. A Measurement is created by the domain
+4. Business rules are applied
+5. If the measurement is valid, it is recorded
+6. The result is returned
+
+Rules : 
+- An invalid measurement is rejected
+- Business errors must be reported
+
+
+|Measurements|
+	|RegisterMeasurement|
+	> RegisterMeasurementCommand - contains the information required to create a Measurement
+	> RegisterMEasurementService - asks the Domain to create a Measurement based on the information from the Command
+
+
+
