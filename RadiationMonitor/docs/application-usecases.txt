@@ -31,7 +31,9 @@ Rules :
 |Measurements|
 	|RegisterMeasurement|
 	> RegisterMeasurementCommand - contains the information required to create a Measurement
-	> RegisterMEasurementService - asks the Domain to create a Measurement based on the information from the Command
+	> RegisterMeasurementService - asks the Domain to create a Measurement based on the information from the Command
+	> IMeasurementRepository - interface, specify the database path (-->  SqlMeasurementRepository --> DB =prod) OR (-->InMemoryMeasurementRepository =dev)
+							 - abstraction (architectural concept) Implementation details are hidden behind a contract.
 
 
 

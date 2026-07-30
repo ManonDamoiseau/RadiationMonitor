@@ -1,3 +1,8 @@
 ﻿***** APPLICATION ADR *****
 Architecture Decision Record
 
+|Measurements|
+	|RegisterMeasurement|
+	> RegisterMeasurementCommand 
+	> RegisterMeasurementService 
+	> IMeasurementRepository - Business logic must not depend directly on the technology, to ensure better maintainability
