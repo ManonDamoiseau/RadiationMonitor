@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Text;
+using RadiationMonitor.Tests.Fakes;
 
 namespace RadiationMonitor.Tests
 {
@@ -19,7 +20,9 @@ namespace RadiationMonitor.Tests
                 DateTimeOffset.UtcNow,
                 1.5,
                 DetectorStatus.Online);
-            RegisterMeasurementService service = new RegisterMeasurementService();
+
+            FakeMeasurementRepository repository = new();
+            RegisterMeasurementService service = new (repository);
 
             //Act
             Measurement measurement = service.RegisterMeasurement(command);
@@ -29,6 +32,7 @@ namespace RadiationMonitor.Tests
             Assert.Equal(command.Timestamp, measurement.Timestamp);
             Assert.Equal(command.DoseRate, measurement.DoseRate);
             Assert.Equal(command.Status, measurement.Status);
+            Assert.Single(repository.Measurements);
         }
     }
 }

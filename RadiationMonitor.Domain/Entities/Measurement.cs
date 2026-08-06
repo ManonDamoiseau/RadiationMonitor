@@ -1,14 +1,12 @@
 ﻿using RadiationMonitor.Domain.Enums;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 
 namespace RadiationMonitor.Domain.Entities
 {
     /// <summary>
-    /// Measurements sent by detector
+    /// Represents a validated radiation measurement produced by a detector.
     /// </summary>
     public class Measurement
     {
@@ -25,14 +23,9 @@ namespace RadiationMonitor.Domain.Entities
                 throw new ArgumentNullException(nameof(detectorId));
             }
 
-            if (detectorId.Length == 0)
-            {
-                throw new ArgumentException ("Detector id cannot be empty.", nameof(detectorId));
-            }
-
             if (string.IsNullOrWhiteSpace(detectorId))
             {
-                throw new ArgumentException("Detector id cannot contain only whitespace.", nameof(detectorId));
+                throw new ArgumentException("Detector id cannot be empty or whitespace.", nameof(detectorId));
             }
 
             if (timestamp == default(DateTimeOffset))
