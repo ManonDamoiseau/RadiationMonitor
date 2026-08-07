@@ -1,4 +1,13 @@
 <Solution>
+  <Folder Name="/docs/">
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/docs/adr/" />
+  <Folder Name="/docs/architecture/">
+    <File Path="layered-architecture.md" />
+  </Folder>
+  <Folder Name="/docs/domain/" />
+  <Folder Name="/docs/use-cases/" />
   <Project Path="RadiationMonitor.Application/RadiationMonitor.Application.csproj" />
   <Project Path="RadiationMonitor.DetectorSimulator/RadiationMonitor.DetectorSimulator.csproj" />
   <Project Path="RadiationMonitor.Domain/RadiationMonitor.Domain.csproj" />
