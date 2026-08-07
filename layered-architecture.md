@@ -8,20 +8,28 @@ RadiationMonitor is organized into multiple layers. The objective is to isolate 
 ```mermaid
 flowchart TD 
 
-	API[Presentation<br/>RadiationMonitor.API]
+    API[RadiationMonitor.API<br/>Presentation]
 
-	APP[Application<br/>Use Cases]
+    APP[RadiationMonitor.Application<br/>Use Cases]
 
-	DOMAIN[Domain<br/>Business Rules]
+    DOMAIN[RadiationMonitor.Domain<br/>Business Rules]
 
-	INFRA[Infrastructure<br/>Repositories]
+    INFRA[RadiationMonitor.Infrastructure<br/>Repository Implementations]
 
-	DB[(Database)]
+    REPO[IMeasurementRepository<br/>Abstraction]
 
-	API --> APP
-	APP --> DOMAIN
-	INFRA --> DOMAIN
-	INFRA --> DB
+    TESTS[RadiationMonitor.Tests]
+
+    API --> APP
+
+    APP --> DOMAIN
+
+    APP --> REPO
+
+    INFRA --> REPO
+
+    TESTS --> DOMAIN
+    TESTS --> APP
 ```
 
 ## Reponsibilities
