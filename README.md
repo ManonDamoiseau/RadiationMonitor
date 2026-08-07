@@ -59,21 +59,15 @@ The project currently uses :
 - Visual Studio 2026 Community (or another compatible IDE)
 
 ### Build
-Clone the repository and open the solution.
-
-```bash
-dotnet build
-```
+Clone the repository and open the solution : dotnet build
 
 Run the API project from Visual Studio or using the .NET CLI.
 
 ## Running Tests
 The project uses xUnit for unit testing
 
-Run all tests with:
-```bash
-dotnet test
-```
+Run all tests with : dotnet test
+
 Current test coverage focuses on:
 - Domain validation
 - Register Measurement use case
@@ -103,6 +97,9 @@ docs/
 |_README.md
 
 ```
+
+### ADR
+- ADR-0001 - Adopt a Layered Architecture Inspired by Clean Architecture
 
 ## Roadmap
 - [x] Domain model
