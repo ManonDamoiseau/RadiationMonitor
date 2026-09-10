@@ -14,4 +14,9 @@ public class InMemoryMeasurementRepository : IMeasurementRepository
     {
         _measurements.Add(measurement);
     }
+
+    public Measurement? GetById (Guid id)
+    {
+        return _measurements.FirstOrDefault(measurement => measurement.Id == id);
+    }
 }

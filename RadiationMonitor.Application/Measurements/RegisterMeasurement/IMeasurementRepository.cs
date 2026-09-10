@@ -9,5 +9,6 @@ namespace RadiationMonitor.Application.Measurements.RegisterMeasurement
     public interface IMeasurementRepository
     {
         void Add(Measurement measurement);
+        Measurement? GetById(Guid id);
     }
 }

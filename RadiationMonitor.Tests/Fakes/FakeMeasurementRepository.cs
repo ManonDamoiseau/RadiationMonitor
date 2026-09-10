@@ -14,5 +14,10 @@ namespace RadiationMonitor.Tests.Fakes
         {  
             Measurements.Add(measurement); 
         }
+
+        public Measurement? GetById(Guid id)
+        {
+            return Measurements.FirstOrDefault(measurement => measurement.Id == id);
+        }
     }
 }
