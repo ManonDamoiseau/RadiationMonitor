@@ -108,8 +108,8 @@ docs/
 - [x] Domain model
 - [x] Business validation
 - [x] Register Measurement use case
-- [ ] In-memory repository
-- [ ] Dependendcy Injection configuration
+- [x] In-memory repository
+- [x] Dependendcy Injection configuration
 - [ ] Entity Framework Core integration
 - [ ] SQL Server persistence
 - [ ] Measurement REST API

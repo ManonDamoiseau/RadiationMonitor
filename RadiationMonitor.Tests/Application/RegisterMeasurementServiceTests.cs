@@ -7,7 +7,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using RadiationMonitor.Tests.Fakes;
 
-namespace RadiationMonitor.Tests
+namespace RadiationMonitor.Tests.Application
 {
     public class RegisterMeasurementServiceTests
     {
