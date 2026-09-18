@@ -110,7 +110,7 @@ docs/
 - [x] Register Measurement use case
 - [x] In-memory repository
 - [x] Dependendcy Injection configuration
-- [ ] Entity Framework Core integration
+- [x] Entity Framework Core integration
 - [ ] SQL Server persistence
 - [ ] Measurement REST API
 - [ ] gRPC service
