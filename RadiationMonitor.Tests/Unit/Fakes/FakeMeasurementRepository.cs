@@ -4,7 +4,7 @@ using System.Text;
 using RadiationMonitor.Application.Measurements.RegisterMeasurement;
 using RadiationMonitor.Domain.Entities;
 
-namespace RadiationMonitor.Tests.Fakes
+namespace RadiationMonitor.Tests.Unit.Fakes
 {
     public class FakeMeasurementRepository : IMeasurementRepository
     {
@@ -13,6 +13,11 @@ namespace RadiationMonitor.Tests.Fakes
         public void Add(Measurement measurement) 
         {  
             Measurements.Add(measurement); 
+        }
+
+        public Measurement? GetById(Guid id)
+        {
+            return Measurements.FirstOrDefault(measurement => measurement.Id == id);
         }
     }
 }
