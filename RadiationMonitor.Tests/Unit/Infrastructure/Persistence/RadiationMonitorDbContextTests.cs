@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RadiationMonitor.Tests.Infrastructure.Persistence
+namespace RadiationMonitor.Tests.Unit.Infrastructure.Persistence
 {
     public class RadiationMonitorDbContextTests
     {

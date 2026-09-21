@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Text;
-using RadiationMonitor.Tests.Fakes;
+using RadiationMonitor.Tests.Unit.Fakes;
 
-namespace RadiationMonitor.Tests.Application
+namespace RadiationMonitor.Tests.Unit.Application
 {
     public class RegisterMeasurementServiceTests
     {

@@ -16,7 +16,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddSingleton<IMeasurementRepository, InMemoryMeasurementRepository>();
 builder.Services.AddScoped<RegisterMeasurementService>();
 
 

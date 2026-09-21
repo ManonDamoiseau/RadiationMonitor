@@ -30,9 +30,7 @@ namespace RadiationMonitor.Application.Measurements.RegisterMeasurement
             
             return measurement;
 
-        }
-
-        
+        } 
 
     }
 }

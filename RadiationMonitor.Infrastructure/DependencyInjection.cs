@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RadiationMonitor.Application.Measurements.RegisterMeasurement;
+using RadiationMonitor.Infrastructure.Measurements;
 using RadiationMonitor.Infrastructure.Persistence;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace RadiationMonitor.Infrastructure
 {
@@ -18,6 +20,8 @@ namespace RadiationMonitor.Infrastructure
 
             services.AddDbContext<RadiationMonitorDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            services.AddScoped<IMeasurementRepository, EfCoreMeasurementRepository>();
 
             return services;
         }

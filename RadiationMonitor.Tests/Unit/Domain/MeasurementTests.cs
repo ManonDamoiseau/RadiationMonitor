@@ -2,7 +2,7 @@
 using RadiationMonitor.Domain.Enums;
 using System.Net.NetworkInformation;
 
-namespace RadiationMonitor.Tests.Domain
+namespace RadiationMonitor.Tests.Unit.Domain
 {
     public class MeasurementTests
     {

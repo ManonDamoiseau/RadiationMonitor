@@ -32,7 +32,7 @@ Each layer has a single responsibility:
 - RadiationMonitor.DetectorSimulator : Simulates radiation detector data sent to the application
 - RadiationMonitor.Domain : Business entities, domain rules and value validation
 - RadiationMonitor.Infrastructure : Technical implementations, repositories and database access
-- RadiationMonitor.Tests : Unit tests for the Domain and Application layers
+- RadiationMonitor.Tests : Unit tests for the Domain and Application layers, integration tests for infratsructure and SQL Server persistence
 
 ## Current Features
 The features currently implemented :
@@ -40,8 +40,18 @@ The features currently implemented :
 - Business validation inside the domain entity
 - Register Measurement use case
 - Repository abstraction (IMeasurementRepository)
+- In-memory repository implementation
+- Dependendcy Injection configuration
+- Entity Framework Core integration
+- SQL Server LocalDB persistence
+- Initial Entity Framework Core migration (InitialCreate)
+- Database creation and update through EF Core migrations
+- EfCoreMeasurementRepository implementation
+- Integration test using a real SQL Server LocalDB database
+- PErsistence validation through write/read integration testing
 - Unit tests for the Domain layer
-- Unit tests for the Application layer : initialized
+- Unit tests for the Application layer
+- Infrastructure tests for the EF Core model configuration
 
 ## Technologies
 The project currently uses : 
@@ -111,7 +121,7 @@ docs/
 - [x] In-memory repository
 - [x] Dependendcy Injection configuration
 - [x] Entity Framework Core integration
-- [ ] SQL Server persistence
+- [x] SQL Server persistence
 - [ ] Measurement REST API
 - [ ] gRPC service
 - [ ] Detector simulator
