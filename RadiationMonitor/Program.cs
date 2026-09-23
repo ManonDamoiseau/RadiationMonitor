@@ -16,7 +16,9 @@ builder.Services.AddControllers();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddScoped<RegisterMeasurementService>();
+builder.Services.AddScoped<
+    IRegisterMeasurementService,
+    RegisterMeasurementService>();
 
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace RadiationMonitor.Application.Measurements.RegisterMeasurement
 {
-    public class RegisterMeasurementService
+    public class RegisterMeasurementService : IRegisterMeasurementService
     {
         private readonly IMeasurementRepository _measurementRepository; 
 
