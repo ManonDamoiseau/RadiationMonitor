@@ -1,3 +1,4 @@
+using RadiationMonitor.API.Exceptions;
 using RadiationMonitor.Application.Measurements.RegisterMeasurement;
 using RadiationMonitor.Infrastructure;
 
@@ -20,6 +21,8 @@ builder.Services.AddScoped<
     IRegisterMeasurementService,
     RegisterMeasurementService>();
 
+builder.Services.AddExceptionHandler<InvalidMeasurementExceptionHandler>();
+
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -31,6 +34,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 
