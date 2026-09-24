@@ -1,5 +1,6 @@
 ﻿using RadiationMonitor.Domain.Entities;
 using RadiationMonitor.Domain.Enums;
+using RadiationMonitor.Domain.Exceptions;
 using System.Net.NetworkInformation;
 
 namespace RadiationMonitor.Tests.Unit.Domain
@@ -35,37 +36,33 @@ namespace RadiationMonitor.Tests.Unit.Domain
             double doseRateTest = 1.5;
             DetectorStatus statusTest = DetectorStatus.Online;
 
-            //Act + Assert
-            Assert.Throws<ArgumentNullException>(() =>
-                new Measurement(detectorIdTest, timestampTest, doseRateTest, statusTest));  
+            //Act
+            InvalidMeasurementException exception = Assert.Throws<InvalidMeasurementException>(() =>
+                new Measurement(detectorIdTest, timestampTest, doseRateTest, statusTest));
+
+            //Assert
+            Assert.Equal(nameof(Measurement.DetectorId), exception.PropertyName);
+            Assert.Equal("Detector ID cannot be null.", exception.Message);
         }
 
-        [Fact]
-        public void Constructor_Should_Throw_WhenDetectorIdIsEmpty()
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void Constructor_Should_Throw_WhenDetectorIdIsEmptyOrWhitespace(
+    string detectorIdTest)
         {
             // Arrange
-            string detectorIdTest = "";
             DateTimeOffset timestampTest = DateTimeOffset.UtcNow;
             double doseRateTest = 1.5;
             DetectorStatus statusTest = DetectorStatus.Online;
 
-            //Act + Assert
-            Assert.Throws<ArgumentException>(() =>
+            // Act
+            InvalidMeasurementException exception = Assert.Throws<InvalidMeasurementException>(() =>
                 new Measurement(detectorIdTest, timestampTest, doseRateTest, statusTest));
-        }
 
-        [Fact]
-        public void Constructor_Should_Throw_WhenDetectorIdIsWhitespace()
-        {
-            // Arrange
-            string detectorIdTest = " ";
-            DateTimeOffset timestampTest = DateTimeOffset.UtcNow;
-            double doseRateTest = 1.5;
-            DetectorStatus statusTest = DetectorStatus.Online;
-
-            //Act + Assert
-            Assert.Throws<ArgumentException>(() =>
-                new Measurement(detectorIdTest, timestampTest, doseRateTest, statusTest));
+            // Assert
+            Assert.Equal(nameof(Measurement.DetectorId), exception.PropertyName);
+            Assert.Equal("Detector ID cannot be empty or whitespace.", exception.Message);
         }
 
         [Fact]
@@ -77,9 +74,13 @@ namespace RadiationMonitor.Tests.Unit.Domain
             double doseRateTest = 1.5;
             DetectorStatus statusTest = DetectorStatus.Online;
 
-            //Act + Assert
-            Assert.Throws<ArgumentException>(() =>
+            //Act
+            InvalidMeasurementException exception = Assert.Throws<InvalidMeasurementException>(() =>
                 new Measurement(detectorIdTest, timestampTest, doseRateTest, statusTest));
+
+            //Assert
+            Assert.Equal(nameof(Measurement.Timestamp), exception.PropertyName);
+            Assert.Equal("Timestamp cannot be the default value.", exception.Message);
         }
 
         [Fact]
@@ -91,9 +92,13 @@ namespace RadiationMonitor.Tests.Unit.Domain
             double doseRateTest = -1.5;
             DetectorStatus statusTest = DetectorStatus.Online;
 
-            //Act + Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            //Act
+            InvalidMeasurementException exception = Assert.Throws<InvalidMeasurementException>(() =>
                 new Measurement(detectorIdTest, timestampTest, doseRateTest, statusTest));
+
+            //Assert
+            Assert.Equal(nameof(Measurement.DoseRate), exception.PropertyName);
+            Assert.Equal("Dose rate cannot be negative.", exception.Message);
         }
 
         [Fact]
@@ -105,9 +110,13 @@ namespace RadiationMonitor.Tests.Unit.Domain
             double doseRateTest = 1.5;
             DetectorStatus statusTest = DetectorStatus.Unknown;
 
-            //Act + Assert
-            Assert.Throws<ArgumentException>(() =>
+            //Act
+            InvalidMeasurementException exception = Assert.Throws<InvalidMeasurementException>(() =>
                 new Measurement(detectorIdTest, timestampTest, doseRateTest, statusTest));
+
+            //Assert
+            Assert.Equal(nameof(Measurement.Status), exception.PropertyName);
+            Assert.Equal("Unknown status is not allowed.", exception.Message);
         }
 
         [Fact]
@@ -119,9 +128,13 @@ namespace RadiationMonitor.Tests.Unit.Domain
             double doseRateTest = 1.5;
             DetectorStatus statusTest = DetectorStatus.Error;
 
-            //Act + Assert
-            Assert.Throws<ArgumentException>(() =>
+            //Act
+            InvalidMeasurementException exception = Assert.Throws<InvalidMeasurementException>(() =>
                 new Measurement(detectorIdTest, timestampTest, doseRateTest, statusTest));
+
+            //Assert
+            Assert.Equal(nameof(Measurement.Status), exception.PropertyName);
+            Assert.Equal("Error status is not allowed.", exception.Message);
         }
     }
 }

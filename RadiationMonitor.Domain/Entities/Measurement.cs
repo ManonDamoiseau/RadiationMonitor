@@ -1,4 +1,5 @@
 ﻿using RadiationMonitor.Domain.Enums;
+using RadiationMonitor.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,32 +21,44 @@ namespace RadiationMonitor.Domain.Entities
         {
             if (detectorId is null)
             {
-                throw new ArgumentNullException(nameof(detectorId));
+                throw new InvalidMeasurementException(
+                    nameof(DetectorId),
+                    "Detector ID cannot be null.");
             }
 
             if (string.IsNullOrWhiteSpace(detectorId))
             {
-                throw new ArgumentException("Detector id cannot be empty or whitespace.", nameof(detectorId));
+                throw new InvalidMeasurementException(
+                    nameof(DetectorId),
+                    "Detector ID cannot be empty or whitespace.");
             }
 
             if (timestamp == default(DateTimeOffset))
             {
-                throw new ArgumentException("Incorrect Timestamp", nameof(timestamp));
+                throw new InvalidMeasurementException(
+                    nameof(Timestamp),
+                    "Timestamp cannot be the default value.");
             }
  
             if (doseRate < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(doseRate),"Dose rate is negative value");
+                throw new InvalidMeasurementException(
+                    nameof(DoseRate),
+                    "Dose rate cannot be negative.");
             }
 
             if (status == DetectorStatus.Unknown)
             {
-                throw new ArgumentException("Unknown status", nameof(status));
+                throw new InvalidMeasurementException(
+                    nameof(Status),
+                    "Unknown status is not allowed.");
             }
 
             if (status == DetectorStatus.Error)
             {
-                throw new ArgumentException("Error status", nameof(status));
+                throw new InvalidMeasurementException(
+                    nameof(Status),
+                    "Error status is not allowed.");
             }
 
             this.Id = Guid.NewGuid();
@@ -55,7 +68,5 @@ namespace RadiationMonitor.Domain.Entities
             this.Status = status;
         }
 
-    };
-
-   
+    }; 
 }
