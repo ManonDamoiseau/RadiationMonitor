@@ -23,6 +23,8 @@ builder.Services.AddScoped<
 
 builder.Services.AddExceptionHandler<InvalidMeasurementExceptionHandler>();
 
+builder.Services.AddProblemDetails();
+
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -44,3 +46,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
+
