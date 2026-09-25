@@ -20,7 +20,11 @@ namespace RadiationMonitor.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Measurement>()
-                .Property(x => x.Status)
+                .Property(m => m.Id)
+                .ValueGeneratedNever();
+
+            modelBuilder.Entity<Measurement>()
+                .Property(m => m.Status)
                 .HasConversion<string>();
         }
     }
