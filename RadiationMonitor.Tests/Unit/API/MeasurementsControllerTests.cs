@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Moq;
 using RadiationMonitor.API.Controllers;
 using RadiationMonitor.API.Models;
+using RadiationMonitor.Application.Measurements.GetMeasurement;
 using RadiationMonitor.Application.Measurements.RegisterMeasurement;
 using RadiationMonitor.Domain.Entities;
 using RadiationMonitor.Domain.Enums;
@@ -16,7 +17,7 @@ namespace RadiationMonitor.Tests.Unit.API
     public class MeasurementsControllerTests
     {
         [Fact]
-        public void RegisterMeasurement_ReturnsCreated()
+        public void RegisterMeasurement_ReturnsCreatedWithMeasurementResponse()
         {
             // Arrange
             var measurement = new Measurement(
@@ -26,14 +27,18 @@ namespace RadiationMonitor.Tests.Unit.API
                 DetectorStatus.Online);
 
             var serviceMock = new Mock<IRegisterMeasurementService>();
-
+            
             serviceMock
                 .Setup(s => s.RegisterMeasurement(
                     It.IsAny<RegisterMeasurementCommand>()))
                 .Returns(measurement);
 
+            var getMeasurementServiceMock =
+                new Mock<IGetMeasurementService>();
+
             var controller = new MeasurementsController(
-                serviceMock.Object);
+                serviceMock.Object,
+                getMeasurementServiceMock.Object);
 
             var request = new RegisterMeasurementRequest
             {
@@ -54,9 +59,27 @@ namespace RadiationMonitor.Tests.Unit.API
                 objectResult.StatusCode);
 
             var returnedMeasurement =
-                Assert.IsType<Measurement>(objectResult.Value);
+                Assert.IsType<MeasurementResponse>(objectResult.Value);
 
-            Assert.Same(measurement, returnedMeasurement);
+            Assert.Equal(
+            measurement.Id,
+            returnedMeasurement.Id);
+
+            Assert.Equal(
+                measurement.DetectorId,
+                returnedMeasurement.DetectorId);
+
+            Assert.Equal(
+                measurement.Timestamp,
+                returnedMeasurement.Timestamp);
+
+            Assert.Equal(
+                measurement.DoseRate,
+                returnedMeasurement.DoseRate);
+
+            Assert.Equal(
+                measurement.Status,
+                returnedMeasurement.Status);
 
             serviceMock.Verify(
                 s => s.RegisterMeasurement(

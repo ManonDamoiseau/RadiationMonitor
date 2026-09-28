@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RadiationMonitor.API.Models;
+using RadiationMonitor.Application.Measurements.GetMeasurement;
 using RadiationMonitor.Application.Measurements.RegisterMeasurement;
 namespace RadiationMonitor.API.Controllers
 {
@@ -8,11 +9,14 @@ namespace RadiationMonitor.API.Controllers
     public class MeasurementsController : ControllerBase
     {
         private readonly IRegisterMeasurementService _registerMeasurementService;
+        private readonly IGetMeasurementService _getMeasurementService;
 
         public MeasurementsController(
-            IRegisterMeasurementService registerMeasurementService)
+           IRegisterMeasurementService registerMeasurementService,
+           IGetMeasurementService getMeasurementService)
         {
             _registerMeasurementService = registerMeasurementService;
+            _getMeasurementService = getMeasurementService;
         }
 
         [HttpPost]
@@ -28,8 +32,43 @@ namespace RadiationMonitor.API.Controllers
             var measurement =
                 _registerMeasurementService.RegisterMeasurement(command);
 
-            return StatusCode(StatusCodes.Status201Created, measurement);
+            var response = new MeasurementResponse
+            {
+                Id = measurement.Id,
+                DetectorId = measurement.DetectorId,
+                Timestamp = measurement.Timestamp,
+                DoseRate = measurement.DoseRate,
+                Status = measurement.Status
+            };
+
+            return StatusCode(StatusCodes.Status201Created, response);
         }
+
+        [HttpGet("{id:guid}")]
+        public IActionResult GetMeasurement(Guid id)
+        {
+            var query = new GetMeasurementQuery(id);
+
+            var measurement =
+                _getMeasurementService.GetMeasurement(query);
+
+            if (measurement is null)
+            {
+                return NotFound();
+            }
+
+            var response = new MeasurementResponse
+            {
+                Id = measurement.Id,
+                DetectorId = measurement.DetectorId,
+                Timestamp = measurement.Timestamp,
+                DoseRate = measurement.DoseRate,
+                Status = measurement.Status
+            };
+
+            return Ok(response);
+        }
+
     }
 
 }

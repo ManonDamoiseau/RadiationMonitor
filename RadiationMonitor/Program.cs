@@ -1,4 +1,5 @@
 using RadiationMonitor.API.Exceptions;
+using RadiationMonitor.Application.Measurements.GetMeasurement;
 using RadiationMonitor.Application.Measurements.RegisterMeasurement;
 using RadiationMonitor.Infrastructure;
 
@@ -20,6 +21,10 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<
     IRegisterMeasurementService,
     RegisterMeasurementService>();
+
+builder.Services.AddScoped<
+    IGetMeasurementService,
+    GetMeasurementService>();
 
 builder.Services.AddExceptionHandler<InvalidMeasurementExceptionHandler>();
 
