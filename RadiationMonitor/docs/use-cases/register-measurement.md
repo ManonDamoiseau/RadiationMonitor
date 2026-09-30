@@ -1,16 +1,15 @@
 ﻿# Register Measurement
 
 ## Goal
-The RegisterMeasurement use case allows the system to register a radiation measurement acquired from a detector.Its responsibility is to coordinate 
-the creation and persistence of a valid Measurement.
+The Register Measurement use case registers a radiation measurement acquired from a detector.
+Its responsibility is to coordinate the creation of a valid Measurement and its persistence.
 
-The use case does not contain business rules. These rules belong to the Domain layer.
+The use case does not define business rules. Business rules are enforced by the Domain layer.
 
 ## Actor
 The actor is an external system or application component providing measurement data from a radiation detector.
 
-Examples:
-
+Examples includes :
 - detector monitoring system
 - acquisition software
 - operator interface
@@ -28,35 +27,34 @@ The use case receives a RegisterMeasurementCommand containing:
 ## Main Flow
 
 1. The application receives a RegisterMeasurementCommand.
-2. The RegisterMeasurementService creates a new Measurement.
-3. The Domain validates business invariants.
-4. The valid measurement is passed to the repository.
-5. The repository stores the measurement.
-1. The use case does not depend on a specific persistence technology.
+2. RegisterMeasurementService creates a Measurement.
+3. The Measurement enforces the domain invariants.
+4. The valid Measurement is passed to IMeasurementRepository.
+5. The repository persists the measurement using its configured implementation.
+6. The created Measurement is returned to the caller.
 
-The concrete repository implementation is provided by the Infrastructure layer.
-
-Currently, the Infrastructure layer provides:
-- InMemoryMeasurementRepository for in-memory persistence
-- EfCoreMeasurementRepository for durable persistence through Entity Framework Core and SQL Server
-
-The SQL Server persistence path is validated through an integration test using SQL Server LocalDB.
+The use case depends on the IMeasurementRepository abstraction and does not depend on a specific persistence technology.
+The current application configuration provides EfCoreMeasurementRepository as the concrete implementation.
+EfCoreMeasurementRepository uses RadiationMonitorDbContext and Entity Framework Core to persist measurements in SQL Server LocalDB.
 
 ## Business Rules
 The created measurement must satisfy all Domain rules:
 
-- Detector identifier must be provided.
-- Timestamp must be valid.
-- Dose rate cannot be negative.
-- Detector status cannot be Unknown.
-- Detector status cannot be Error.
+- DetectorId must not be null, empty or whitespace.
+- Timestamp must not be the default DateTimeOffset value.
+- DoseRate must be greater than or equal to zero.
+- Status must not be Unknown.
+- Status must not be Error.
+
+These rules are enforced by the Measurement entity.
 
 ## Error Cases
 The operation fails when:
-
-- input data is invalid
-- the created measurement does not comply with domain rules
+- the input violates a domain invariant
 - persistence fails
+
+Domain validation failures represented by InvalidMeasurementException are handled by the API exception handler and returned as HTTP 400 Bad Request responses using ProblemDetails.
+Persistence failures are technical errors handled outside the Domain and Application business rules.
 
 ## Responsibilities
 
@@ -64,35 +62,29 @@ The operation fails when:
 Responsible for:
 
 - orchestrating the use case
-- creating domain objects
-- interacting with repositories
+- creating the Measurement domain entity
+- passing the valid entity to IMeasurementRepository
+- returning the created measurement
 
 Not responsible for:
 
 - defining business rules
-- storing data directly
+- implementing persistence
+- depending on a specific database technology
 
 ### Measurement
 Responsible for:
 
-- protecting domain invariants
-- ensuring that only valid measurements exist
+- enforcing domain invariants
+- preventing creation of an invalid measurement
 - generating the measurement identifier
 
-### Repository
+### IMeasurementRepository
 Responsible for:
+- defining the persistence operations required by the Application layer
+- abstracting the persistence mechanism from the use case
 
-- abstracting data persistence from the Application layer
-- providing the data access operations required by application use cases
-- hiding the underlying persistence mechanism from the Application layer
-
-The repository contract is defined by IMeasurementRepository. Concrete implementations are provided by the Infrastructure layer.
-
-Current implementations include:
-- InMemoryMeasurementRepository
-- EfCoreMeasurementRepository
-
-EfCoreMeasurementRepository uses RadiationMonitorDbContext and Entity Framework Core to persist measurements in SQL Server.
+The concrete implementation is provided by the Infrastructure layer.
 
 ```mermaid
 sequenceDiagram
@@ -102,8 +94,8 @@ participant API as RadiationMonitor.API
 participant Service as RegisterMeasurementService
 participant Domain as Measurement
 participant Repository as IMeasurementRepository
-participant Persistence as Concrete Repository
-participant DB as SQL Server
+participant Persistence as EfCoreMeasurementRepository
+participant DB as SQL Server LocalDB
 
 Client->>API: Submit measurement data
 
@@ -115,23 +107,23 @@ Domain-->>Service: Valid Measurement
 
 Service->>Repository: Add(Measurement)
 
-Repository->>Persistence: Persist measurement
+Repository->>Persistence: Add(Measurement)
 Persistence->>DB: INSERT Measurement
 
 DB-->>Persistence: Success
 Persistence-->>Repository: Success
 
-Service-->>API: Measurement registered
+Service-->>API: Measurement
 
-API-->>Client: Confirmation
+API-->>Client: 201 Created
 ```
 
 ## Testing
 The use case is covered by unit tests using a repository test double.
 Persistence is tested separately through integration tests.
 
-The SQL Server integration test verifies that EfCoreMeasurementRepository can:
-1. persist a valid Measurement
-2. write the measurement to SQL Server LocalDB
-3. retrieve it using a new DbContext
-4. preserve the persisted values
+The persistence integration tests verify that EfCoreMeasurementRepository can :
+1. Persist a valid Measurement
+2. Store the measurement in SQL Server LocalDB
+3. Retrieve the persisted measurement using a new DbContext
+4. Preserve the persisted values

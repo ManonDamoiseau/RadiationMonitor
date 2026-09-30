@@ -31,24 +31,35 @@ To be considered valid, a Measurement must comply with these rules :
 - DetectorId must not be null.
 - DetectorId must not be empty.
 - DetectorId must not contain only whitespace.
-- Timestamp must be defined.
+- Timestamp must be defined and must not be the default DateTimeOffset value.
 - DoseRate must be greater than or equal to zero.
 - Status must not be Unknown.
 - Status must not be Error.
 
 A Measurement instance cannot exist in an invalid state.
 
-## Notes
-Business validation belongs to the Domain layer and must remain independent from technical concerns such as databases, HTTP or user interfaces.
+## Domain Responsibility
+Business validation belongs to the Domain layer and is independent from technical concerns such as databases, HTTP or user interfaces.
 
 ```mermaid
 classDiagram
 
 class Measurement {
-	+Guid Id
-	+string DetectorId
-	+DateTimeOffset
-	+double DoseRate
-	+DetectorStatus Status
+    +Guid Id
+    +string DetectorId
+    +DateTimeOffset Timestamp
+    +double DoseRate
+    +DetectorStatus Status
 }
+
+class DetectorStatus {
+    <<enumeration>>
+    Unknown
+    Online
+    Warning
+    Error
+}
+
+Measurement --> DetectorStatus
+
 ```

@@ -221,6 +221,86 @@ namespace RadiationMonitor.Tests.Integration.API
                 persistedMeasurement.Status);
 
         }
+        [Fact]
+        public async Task GetMeasurement_WithExistingMeasurement_ReturnsOk()
+        {
+            // Arrange
+            await using var factory =
+                new RadiationMonitorWebApplicationFactory();
+
+            await using var scope =
+                factory.Services.CreateAsyncScope();
+
+            var repository =
+                scope.ServiceProvider
+                    .GetRequiredService<IMeasurementRepository>();
+
+            var measurement = new Measurement(
+                "DETECTOR-01",
+                DateTimeOffset.UtcNow,
+                12.5,
+                DetectorStatus.Online);
+
+            repository.Add(measurement);
+
+            using var client = factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync(
+                $"/api/Measurements/{measurement.Id}");
+
+            // Assert - HTTP response
+            Assert.Equal(
+                HttpStatusCode.OK,
+                response.StatusCode);
+
+            var responseMeasurement =
+                await response.Content
+                    .ReadFromJsonAsync<MeasurementResponse>();
+
+            Assert.NotNull(responseMeasurement);
+
+            Assert.Equal(
+                measurement.Id,
+                responseMeasurement!.Id);
+
+            Assert.Equal(
+                measurement.DetectorId,
+                responseMeasurement.DetectorId);
+
+            Assert.Equal(
+                measurement.Timestamp,
+                responseMeasurement.Timestamp);
+
+            Assert.Equal(
+                measurement.DoseRate,
+                responseMeasurement.DoseRate);
+
+            Assert.Equal(
+                measurement.Status,
+                responseMeasurement.Status);
+        }
+        [Fact]
+        public async Task GetMeasurement_WithNonExistingMeasurement_ReturnsNotFound()
+        {
+            // Arrange
+            await using var factory =
+                new RadiationMonitorWebApplicationFactory();
+
+            using var client = factory.CreateClient();
+
+            var id = Guid.NewGuid();
+
+            // Act
+            var response = await client.GetAsync(
+                $"/api/Measurements/{id}");
+
+            // Assert
+            Assert.Equal(
+                HttpStatusCode.NotFound,
+                response.StatusCode);
+        }
+
         private sealed class MeasurementResponse
         {
             public Guid Id { get; set; }

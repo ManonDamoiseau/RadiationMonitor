@@ -1,30 +1,39 @@
 # RadiationMonitor
 
 ## Overview
-RadiationMonitor is a learning project designed to simulate the receipt and management of radiation measurements produced by medical equipment.
+RadiationMonitor is a personal software engineering learning project that simulates the ingestion and management of radiation measurements produced by radiation detectors.
+The project is developed using practices commonly used in professional software projects, with a focus on maintainability, testing, documentation and incremental development.
 
-## Objectives
-The aim of this project is to develop an application using a software engineering approach and to create a project that is maintainable, 
-tested and documented in the same way as a professional project.
-
-Current learning objectives includes:
-- Layered architecture
-- Unit testing with xUnit
+## Learning Objectives
+The project is used to practice:
+- Layered architecture inspired by Clean Architecture principles
+- Domain modeling and business validation
+- Application use cases
+- Unit and integration testing with xUnit
+- Dependency injection
+- Entity Framework Core and SQL Server persistence
 - Git workflow
-- Software documentation (README and ADR)
-- CI/CD preparation
+- Software documentation and Architecture Decision Records (ADR)
+- CI/CD
 
 ## Architecture
-The architecture fort this application is inspired by Clean Architecture principles.
+The application follows a layered architecture inspired by Clean Architecture principles.
 ```
-Presentation --> Application --> Domain <-- Infrastructure
+Presentation --> Application --> Domain
+                    |
+                    v
+          IMeasurementRepository
+                    ^
+                    |
+              Infrastructure
 ```
 
-Each layer has a single responsibility:
-- Presentation : receive requests from users or external systems (API, UI, gRPC, ...).
-- Application : orchestrates use cases and coordinates the workflow.
-- Domain : contains business rules and domain model.
-- Infrastructure : implements technical concerns such as data persistence or external services.
+The main responsibilities are:
+- API: exposes application capabilities through external interfaces such as REST and, later, gRPC.
+- Application: implements use cases and coordinates application workflows.
+- Domain: contains the domain model and business rules.
+- Infrastructure: provides technical implementations such as persistence and database access.
+Dependencies are directed toward abstractions and the domain rather than toward infrastructure-specific implementations.
 
 ## Solution Structure
 - RadiationMonitor.API : ASP.NET Core Web API exposing the application's use cases
@@ -32,96 +41,114 @@ Each layer has a single responsibility:
 - RadiationMonitor.DetectorSimulator : Simulates radiation detector data sent to the application
 - RadiationMonitor.Domain : Business entities, domain rules and value validation
 - RadiationMonitor.Infrastructure : Technical implementations, repositories and database access
-- RadiationMonitor.Tests : Unit tests for the Domain and Application layers, integration tests for infratsructure and SQL Server persistence
+- RadiationMonitor.Tests : Unit tests and integration tests
 
 ## Current Features
-The features currently implemented :
-- Domain model for Measurement
-- Business validation inside the domain entity
+The following features are currently implemented:
+- Measurement domain model
+- Domain-level business validation
 - Register Measurement use case
-- Repository abstraction (IMeasurementRepository)
-- In-memory repository implementation
-- Dependendcy Injection configuration
+- Get Measurement use case
+- IMeasurementRepository abstraction
+- Entity Framework Core repository implementation
+- Dependency injection configuration
 - Entity Framework Core integration
 - SQL Server LocalDB persistence
-- Initial Entity Framework Core migration (InitialCreate)
-- Database creation and update through EF Core migrations
-- EfCoreMeasurementRepository implementation
-- Integration test using a real SQL Server LocalDB database
-- PErsistence validation through write/read integration testing
-- Unit tests for the Domain layer
-- Unit tests for the Application layer
-- Infrastructure tests for the EF Core model configuration
+- Initial Entity Framework Core migration
+- Database creation and updates through EF Core migrations
+- REST API for registering measurements
+- REST API for retrieving measurements by ID
+- API integration tests for the measurement endpoints
+- Domain unit tests
+- Application unit tests
+- Infrastructure tests for EF Core model configuration
+- Persistence validation through integration tests
 
 ## Technologies
 The project currently uses : 
 - C#
 - .NET
 - ASP.NET Core Web API
+- Entity Framework Core
+- SQL Server LocalDB
 - xUnit
 - Git
 - Markdown documentation
 
 ## Getting Started
 
-### Prequisities
+### Prerequisites
 - .NET
 - Visual Studio 2026 Community (or another compatible IDE)
+- SQL Server LocalDB
 
 ### Build
-Clone the repository and open the solution : dotnet build
+Clone the repository, open the solution and build it with : dotnet build
 
-Run the API project from Visual Studio or using the .NET CLI.
+## Run the API
+Run the RadiationMonitor.API project from Visual Studio or with the .NET CLI.
+Database creation and updates are handled through Entity Framework Core migrations according to the application's configuration.
 
 ## Running Tests
-The project uses xUnit for unit testing
+Run the complete test suite with : dotnet test
 
-Run all tests with : dotnet test
+The test suite currently covers:
+- Domain business validation
+- Application use cases
+- API integration tests
+- Entity Framework Core configuration
+- SQL Server LocalDB persistence
 
-Current test coverage focuses on:
-- Domain validation
-- Register Measurement use case
+## API
+The REST API currently exposes measurement operations : 
+- Register a measurement : POST /api/Measurements
+- Get a measurement : GET /api/Measurements/{id}
+
+The API currently returns the following HTTP status codes :
+- 201 Created : when a measurement is successfully registered
+- 200 OK : when a requested measurement is found
+- 400 Bad Request : when the measurement is invalid
+- 404 Not Found : when the requested measurement does not exist
 
 ## Documentation
 Additional documentation is available in the "docs" folder.
-- Architecture overview
-- Architecture Decision Records (ADR)
-- Domain model description
-- Use case documentation
 
 ```
 docs/
-|
 |_use-cases/
-|	|_Application workflow documentation
-|
 |_domain/
-|	|_Business concepts and domain model
-|
 |_architecture/
-|	|_System architecture documentation
-|
 |_adr/
-|	|_Architecture decisions
-|
-|_README.md
+
 
 ```
+The documentation includes:
+- Application use cases
+- Domain model and business concepts
+- Architecture documentation
+- Architecture Decision Records (ADR)
 
 ### ADR
 - ADR-0001 - Adopt a Layered Architecture Inspired by Clean Architecture
+- ADR-0002 - Persist DetectorStatus as String
 
 ## Roadmap
+
+### Completed
 - [x] Domain model
 - [x] Business validation
 - [x] Register Measurement use case
 - [x] In-memory repository
-- [x] Dependendcy Injection configuration
+- [x] Dependency Injection configuration
 - [x] Entity Framework Core integration
 - [x] SQL Server persistence
-- [ ] Measurement REST API
+- [x] Measurement REST API
+
+### Planned
 - [ ] gRPC service
 - [ ] Detector simulator
 - [ ] CI/CD pipeline
 - [ ] Docker support
+
+
 
