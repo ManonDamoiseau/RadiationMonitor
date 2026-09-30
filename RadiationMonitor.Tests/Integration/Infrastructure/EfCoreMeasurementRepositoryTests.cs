@@ -26,7 +26,7 @@ namespace RadiationMonitor.Tests.Integration.Infrastructure
         {
             using var context = CreateContext();
 
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
 
             Assert.True(context.Database.CanConnect());
         }
@@ -36,14 +36,14 @@ namespace RadiationMonitor.Tests.Integration.Infrastructure
             // Arrange
             var measurement = new Measurement(
                     "DET-TEST-001",
-                    DateTime.UtcNow,
+                    DateTimeOffset.UtcNow,
                     12.5,
                     DetectorStatus.Online
                     );
 
             using (var context = CreateContext())
             {
-                context.Database.EnsureCreated();
+                context.Database.Migrate();
 
                 var repository = new EfCoreMeasurementRepository(context);
 

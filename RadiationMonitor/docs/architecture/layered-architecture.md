@@ -1,7 +1,7 @@
 ﻿# Layered Architecture
 
 ## Overview
-RadiationMonitor is organized into multiple layers. The objective is to isolate business rules from techical concerns.
+RadiationMonitor is organized into multiple layers.  The architecture separates business rules from application workflows, external interfaces and technical infrastructure.
 
 The main layers are:
 - Presentation (RadiationMonitor.API)
@@ -13,7 +13,7 @@ The main layers are:
 ## Architecture Diagram
 
 ```mermaid
-flowchart TD 
+flowchart TD
 
 API[RadiationMonitor.API<br/>Presentation]
 
@@ -24,8 +24,6 @@ DOMAIN[RadiationMonitor.Domain<br/>Business Rules]
 REPO[IMeasurementRepository<br/>Repository Abstraction]
 
 INFRA[RadiationMonitor.Infrastructure<br/>Technical Implementations]
-
-INMEM[InMemoryMeasurementRepository<br/>In-Memory Repository]
 
 EF[EfCoreMeasurementRepository<br/>EF Core Repository]
 
@@ -41,7 +39,6 @@ APP --> DOMAIN
 APP --> REPO
 
 INFRA --> REPO
-INMEM --> REPO
 EF --> REPO
 EF --> DB
 DB --> SQL
@@ -55,43 +52,55 @@ TESTS --> INFRA
 ## Reponsibilities
 
 ### Presentation
-- Receive external requests
-- Expose application features
-- Communication with external clients
-- Act as the composition root fir dependency injection
+RadiationMonitor.API is responsible for:
+- Receiving external HTTP requests
+- Exposing application use cases through the REST API
+- Mapping HTTP requests to application commands and queries
+- Mapping application results to HTTP responses
+- Handling API-level exceptions
+- Configuring application dependencies
+
+The API project acts as the composition root for dependency injection.
 
 ### Application 
-- Implement use cases
-- Coordinate application workflow
-- Depend on abstractions rather than infrastructure implementations
+RadiationMonitor.Application is responsible for:
+- Implementing application use cases
+- Coordinating application workflows
+- Defining application-level abstractions
+- Depending on abstractions rather than infrastructure implementations
+
+Current use cases include:
+- Register Measurement
+- Get Measurement
 
 ### Domain
-- Business entities
+RadiationMonitor.Domain contains:
+- Domain entities
 - Business rules
-- Validation
+- Domain validation
 - Domain invariants
 
+The Measurement entity is responsible for enforcing the validity of its own state.
+
 ### Infrastructure
+RadiationMonitor.Infrastructure contains technical implementations required by the application, including:
 - Data persistence
-- External systems
-- Technical implementations
-- Concrete implementation of application-defined repository contracts
 - Entity Framework Core configuration
-- SQL Server database access
+- SQL Server access
+- Repository implementations
+- Database context configuration
 
-The infrastructure layer currently contains both an in-memory repository and an Entity Framework Core implementation.
-
-InMemoryMeasurementRepository stores measurements in memory and does not provide durable persistence.
-EfCoreMeasurementRepository provides durable persistence through RadiationMonitorDbContext and SQL Server LocalDB.
+Two implementations of IMeasurementRepository exist:
+- InMemoryMeasurementRepository provides non-durable in-memory storage.
+- EfCoreMeasurementRepository provides durable persistence through Entity Framework Core and SQL Server LocalDB.
+- The application currently uses EfCoreMeasurementRepository.
 
 ## Dependency Injection
-RadiationMonitor uses the ASP.NET Core dependency injection container to compose the application.
-RegisterMeasurementService depends on the IMeasurementRepository abstraction, while RadiationMonitor.API configures the concrete implementation used by the application.
-RadiationMonitor.API acts as the composition root and is responsible for configuring these dependencies.
-Infrastructure provides the EF Core DbContext through the AddInfrastructure extension method.
+RadiationMonitor uses the ASP.NET Core dependency injection container.
+RadiationMonitor.API acts as the composition root and registers the application and infrastructure dependencies.
 
-The current application configuration still registers InMemoryMeasurementRepository as the implementation of IMeasurementRepository.
-This means that the application currently uses the in-memory repository for the IMeasurementRepository dependency. 
-RadiationMonitorDbContext is registered as Scoped, which is the standard lifetime used for an EF Core DbContext in an ASP.NET Core application.
-The transition from the in-memory repository to EfCoreMeasurementRepository 
-will be handled through dependency injection without changing the application use case or the repository abstraction.
+The repository abstraction is mapped to the Entity Framework Core implementation : services.AddScoped<IMeasurementRepository, EfCoreMeasurementRepository>();
+Application services depend on IMeasurementRepository rather than directly on EfCoreMeasurementRepository.
+
+RadiationMonitorDbContext is registered with a scoped lifetime, following the standard lifetime used for Entity Framework Core DbContext instances in ASP.NET Core.
+The infrastructure dependency registration is encapsulated in the AddInfrastructure extension method.
