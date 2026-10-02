@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "RadiationMonitor.API.Protos";
+
+import "google/protobuf/timestamp.proto";
+
+service MeasurementService {
+    rpc RegisterMeasurement(RegisterMeasurementRequest)
+        returns (RegisterMeasurementResponse);
+}
+
+message RegisterMeasurementRequest {
+    string detector_id = 1;
+    google.protobuf.Timestamp timestamp = 2;
+    double dose_rate = 3;
+    DetectorStatus status = 4;
+}
+
+message RegisterMeasurementResponse {
+    string measurement_id = 1;
+}
+
+enum DetectorStatus {
+    DETECTOR_STATUS_UNKNOWN = 0;
+    DETECTOR_STATUS_ONLINE = 1;
+    DETECTOR_STATUS_WARNING = 2;
+    DETECTOR_STATUS_ERROR = 3;
+}
