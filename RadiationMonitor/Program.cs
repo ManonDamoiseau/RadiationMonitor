@@ -1,4 +1,5 @@
 using RadiationMonitor.API.Exceptions;
+using RadiationMonitor.API.Grpc;
 using RadiationMonitor.Application.Measurements.GetMeasurement;
 using RadiationMonitor.Application.Measurements.RegisterMeasurement;
 using RadiationMonitor.Infrastructure;
@@ -50,7 +51,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-// app.MapGrpcService<MeasurementGrpcService>();
+app.MapGrpcService<MeasurementGrpcService>();
 
 app.Run();
 
