@@ -43,6 +43,13 @@ namespace RadiationMonitor.API.Grpc
                         StatusCode.InvalidArgument,
                         ex.Message));
             }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                throw new RpcException(
+                    new Status(
+                        StatusCode.InvalidArgument,
+                        ex.Message));
+            }
         }
 
         private static Domain.Enums.DetectorStatus MapDetectorStatus(Protos.DetectorStatus status)
