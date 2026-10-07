@@ -12,6 +12,7 @@ The project is used to practice:
 - Unit and integration testing with xUnit
 - Dependency injection
 - Entity Framework Core and SQL Server persistence
+- REST and gRPC API development
 - Git workflow
 - Software documentation and Architecture Decision Records (ADR)
 - CI/CD
@@ -29,14 +30,14 @@ Presentation --> Application --> Domain
 ```
 
 The main responsibilities are:
-- API: exposes application capabilities through external interfaces such as REST and, later, gRPC.
+- API: exposes application capabilities through external interfaces such as REST and gRPC.
 - Application: implements use cases and coordinates application workflows.
 - Domain: contains the domain model and business rules.
 - Infrastructure: provides technical implementations such as persistence and database access.
 Dependencies are directed toward abstractions and the domain rather than toward infrastructure-specific implementations.
 
 ## Solution Structure
-- RadiationMonitor.API : ASP.NET Core Web API exposing the application's use cases
+- RadiationMonitor.API : ASP.NET Core Web API exposing the application's use cases through REST and gRPC
 - RadiationMonitor.Application : Coordinates the application's use cases
 - RadiationMonitor.DetectorSimulator : Simulates radiation detector data sent to the application
 - RadiationMonitor.Domain : Business entities, domain rules and value validation
@@ -58,7 +59,9 @@ The following features are currently implemented:
 - Database creation and updates through EF Core migrations
 - REST API for registering measurements
 - REST API for retrieving measurements by ID
+- gRPC service for registering measurements
 - API integration tests for the measurement endpoints
+- gRPC integration tests
 - Domain unit tests
 - Application unit tests
 - Infrastructure tests for EF Core model configuration
@@ -69,6 +72,7 @@ The project currently uses :
 - C#
 - .NET
 - ASP.NET Core Web API
+- ASP.NET Core gRPC
 - Entity Framework Core
 - SQL Server LocalDB
 - xUnit
@@ -96,8 +100,11 @@ The test suite currently covers:
 - Domain business validation
 - Application use cases
 - API integration tests
+- gRPC integration tests
 - Entity Framework Core configuration
 - SQL Server LocalDB persistence
+
+Integration tests use a dedicated SQL Server LocalDB database and are isolated from each other through the test infrastructure.
 
 ## API
 The REST API currently exposes measurement operations : 
@@ -109,6 +116,16 @@ The API currently returns the following HTTP status codes :
 - 200 OK : when a requested measurement is found
 - 400 Bad Request : when the measurement is invalid
 - 404 Not Found : when the requested measurement does not exist
+
+## gRPC
+The API also exposes a gRPC service for registering measurements.
+
+The current gRPC operation is :
+RegisterMeasurement : registers a measurement and returns its identifier
+
+The gRPC contract is defined in : RadiationMonitor.API/Protos/measurement.proto
+
+The gRPC service uses the same application use case as the REST API and persists measurements through the configured infrastructure.
 
 ## Documentation
 Additional documentation is available in the "docs" folder.
@@ -143,9 +160,9 @@ The documentation includes:
 - [x] Entity Framework Core integration
 - [x] SQL Server persistence
 - [x] Measurement REST API
+- [x] gRPC service
 
 ### Planned
-- [ ] gRPC service
 - [ ] Detector simulator
 - [ ] CI/CD pipeline
 - [ ] Docker support

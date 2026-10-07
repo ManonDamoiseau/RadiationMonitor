@@ -9,6 +9,7 @@ using System.Text;
 
 namespace RadiationMonitor.Tests.Integration.Infrastructure
 {
+    [Collection("IntegrationTests")]
     public class EfCoreMeasurementRepositoryTests
     {
         private static RadiationMonitorDbContext CreateContext()

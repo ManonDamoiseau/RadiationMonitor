@@ -45,7 +45,17 @@ namespace RadiationMonitor.Tests.Integration.API
 
             dbContext.Database.Migrate();
 
+            ResetDatabase(dbContext);
+
             return host;
+        }
+        private static void ResetDatabase(
+            RadiationMonitorDbContext dbContext)
+        {
+            dbContext.Measurements.RemoveRange(
+                dbContext.Measurements);
+
+            dbContext.SaveChanges();
         }
     }
 }

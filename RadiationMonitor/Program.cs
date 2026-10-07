@@ -1,4 +1,5 @@
 using RadiationMonitor.API.Exceptions;
+using RadiationMonitor.API.Grpc;
 using RadiationMonitor.Application.Measurements.GetMeasurement;
 using RadiationMonitor.Application.Measurements.RegisterMeasurement;
 using RadiationMonitor.Infrastructure;
@@ -15,6 +16,7 @@ builder.Host.UseDefaultServiceProvider((context, options) =>
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddGrpc();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -49,6 +51,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGrpcService<MeasurementGrpcService>();
 
 app.Run();
 
