@@ -12,6 +12,7 @@ using System.Net.Http.Json;
 
 namespace RadiationMonitor.Tests.Integration.API
 {
+    [Collection("IntegrationTests")]
     public class MeasurementsApiTests
     {
         public static IEnumerable<object[]> InvalidMeasurements =>
